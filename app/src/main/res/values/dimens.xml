@@ -1,0 +1,13 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <!-- Nath note: nav_header_height was initially 176dp,
+      I had to change it to 230dp so it would work on more devices
+      (esp pixel 6a where it was getting cut off -->
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">230dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

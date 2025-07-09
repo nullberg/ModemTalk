@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.nullberg.modemtalk.ui.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_modemspecs"
+        android:name="com.nullberg.modemtalk.ui.ModemSpecsFragment"
+        android:label="@string/menu_modemspecs"
+        tools:layout="@layout/fragment_modemspecs" />
+
+    <fragment
+        android:id="@+id/nav_telephony"
+        android:name="com.nullberg.modemtalk.ui.TelephonyFragment"
+        android:label="@string/menu_telephony"
+        tools:layout="@layout/fragment_telephony" />
+
+    <fragment
+        android:id="@+id/nav_modemtalk"
+        android:name="com.nullberg.modemtalk.ui.ModemTalkFragment"
+        android:label="@string/menu_modemtalk"
+        tools:layout="@layout/fragment_modemtalk" />
+</navigation>

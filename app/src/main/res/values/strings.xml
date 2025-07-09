@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">ModemTalk</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">ModemTalk App</string>
+    <string name="nav_header_subtitle">Talk to your phone\'s modem</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_modemspecs">Modem Specs</string>
+    <string name="menu_telephony">Telephony</string>
+    <string name="menu_modemtalk">Modem Talk</string>
+
+    <string name="home_description_text">
+        With this app you can talk to the modem that is on your SoC.
+        This works better for MediaTek phones.
+        So far it has been tested for Xiaomi Redmi 9A (M2006C3LG).
+    </string>
+
+</resources>
