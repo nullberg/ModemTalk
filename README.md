@@ -5,7 +5,11 @@ In Android phones that have a MediaTek [SoC](https://en.wikipedia.org/wiki/Syste
 
 This app helps you to do so.
 
+Example screenshot:
 
+
+
+<img src="images/example1_screenshot.jpeg" alt="app icon" width="200px" />
 
 
 

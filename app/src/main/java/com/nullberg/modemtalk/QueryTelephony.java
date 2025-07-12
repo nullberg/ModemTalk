@@ -2,11 +2,14 @@ package com.nullberg.modemtalk;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.telephony.CellInfo;
+import android.telephony.CellInfoLte;
 import android.telephony.TelephonyManager;
 
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QueryTelephony {
 
@@ -17,6 +20,40 @@ public class QueryTelephony {
     public QueryTelephony(Context context) {
 
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        try {
+            List<CellInfo> cellInf = tm.getAllCellInfo();
+
+            int dbm=0;
+
+            for (CellInfo ci : cellInf) {
+                if (ci instanceof CellInfoLte && ci.isRegistered()) {
+                    dbm = ((CellInfoLte) ci).getCellSignalStrength().getDbm();
+                    break;
+                }
+            }
+
+            addTMquery("dB", String.valueOf(dbm) );
+
+        } catch (Exception e) {
+            addTMquery("dB", "<error>");
+        }
+//        List<CellInfo> cellInf = tm.getAllCellInfo();
+//        cellInf.size();
+
+//        List<CellInfo> cellInfoList = tm.getAllCellInfo();
+//
+//        if (cellInfoList == null) return;
+//
+//        for (CellInfo cellInfo : cellInfoList) {
+//            if (cellInfo instanceof CellInfoLte && cellInfo.isRegistered()) {
+//                int dbm = ((CellInfoLte) cellInfo).getCellSignalStrength().getDbm();
+//                System.out.println("LTE Signal Strength: " + dbm + " dBm");
+//                break; // Stop after first registered LTE cell
+//            }
+//        }
+
+
 
         try {
             addTMquery("Device Software Version", tm.getDeviceSoftwareVersion());
@@ -65,6 +102,9 @@ public class QueryTelephony {
         } catch (Exception e) {
             addTMquery("SIM State", "<error>");
         }
+
+
+
 
         // Combine into newline-separated strings (optional)
         labelStr = String.join("\n", labels);

@@ -55,15 +55,16 @@ class ModemTalkFragment : Fragment() {
 
     private fun openEngineerMode(context: Context) {
 
+        Utls.simpleAlertDialog(context)
+
+//        val intent = Intent()
+//        intent.setClassName(
+//            "com.mediatek.engineermode",
+//            "com.mediatek.engineermode.bandmode.BandMode"
+//        )
+//        startActivity(intent)
 
 
-
-        val intent = Intent()
-        intent.setClassName(
-            "com.mediatek.engineermode",
-            "com.mediatek.engineermode.bandmode.BandMode"
-        )
-        startActivity(intent)
 
 //        val intent = Intent()
 //        intent.setClassName(
