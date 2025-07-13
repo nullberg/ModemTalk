@@ -13,7 +13,9 @@ import android.telephony.TelephonyManager;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QueryTelephony {
 
@@ -26,33 +28,40 @@ public class QueryTelephony {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         try {
-            List<CellInfo> cellInf = tm.getAllCellInfo();
 
-            CellInfoLte     lteCell = null;
-            CellInfoGsm     gsmCell = null;
-            CellIdentityLte cellIDlte = null;
+            List<CellInfo>  cellInf   = null;
+            CellInfoLte     lteCell   = null;
+            CellIdentityLte lteCellID = null;
+            int[] bandlist            = null;
+
+
+            if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                cellInf = tm.getAllCellInfo(); // No lint warning here
+            }
 
             addTMquery("cellInf.size()", String.valueOf(cellInf.size()));
 
             for (CellInfo ci : cellInf) {
                 if (ci instanceof CellInfoLte && ci.isRegistered()) {
-                    lteCell = (CellInfoLte) ci;
-                    cellIDlte = lteCell.getCellIdentity();
+                    lteCell   = (CellInfoLte) ci;
+                    lteCellID = lteCell.getCellIdentity();
 
-                    addTMquery("Cell ID", String.valueOf( cellIDlte.getCi() ));
-                    addTMquery("Physical Cell ID", String.valueOf( cellIDlte.getPci() ));
-
-                    // EARFCN = E-UTRA Absolute Radio Frequency Channel Number
-                    // E-UTRA = Evolved UMTS Terrestrial Radio Access
-
-//                    cellIDlte.getBands()
-
-                    addTMquery("Earfcn (freq)", String.valueOf( cellIDlte.getEarfcn() ));
-
-                    addTMquery("dB (LTE)", String.valueOf( lteCell.getCellSignalStrength().getDbm() ) );
+                    bandlist = lteCellID.getBands();
                 }
             }
 
+            if (lteCell != null) {
+                addTMquery("getBands",         intArrToStr(bandlist         ));
+                addTMquery("Cell ID",          tostr( lteCellID.getCi()     ));
+                addTMquery("Physical Cell ID", tostr( lteCellID.getPci()    ));
+                addTMquery("EARFCN",           tostr( lteCellID.getEarfcn() ));
+                addTMquery("dB (LTE)", String.valueOf( lteCell.getCellSignalStrength().getDbm() ) );
+            }
+
+            // EARFCN = E-UTRA Absolute Radio Frequency Channel Number
+            // E-UTRA = Evolved UMTS Terrestrial Radio Access
+            
         } catch (Exception e) {
             addTMquery("ALL LTE QUERIES", "<error>");
         }
@@ -140,4 +149,20 @@ public class QueryTelephony {
             default: return "Other";
         }
     }
+
+    private boolean permissionGrantedAccessFineLocation(Context ctxt) {
+
+        return ActivityCompat.checkSelfPermission(ctxt, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private String intArrToStr(int[] arr) {
+        return Arrays.stream(arr).mapToObj(String::valueOf).collect(Collectors.joining(","));
+    }
+
+    private <T> String tostr(T genInput) {
+        return String.valueOf(genInput);
+    }
+
+
 }
