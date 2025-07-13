@@ -2,8 +2,12 @@ package com.nullberg.modemtalk;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.telephony.CellIdentityLte;
 import android.telephony.CellInfo;
+import android.telephony.CellInfoGsm;
 import android.telephony.CellInfoLte;
+import android.telephony.CellInfoNr;
 import android.telephony.TelephonyManager;
 
 import androidx.core.app.ActivityCompat;
@@ -24,35 +28,34 @@ public class QueryTelephony {
         try {
             List<CellInfo> cellInf = tm.getAllCellInfo();
 
-            int dbm=0;
+            CellInfoLte     lteCell = null;
+            CellInfoGsm     gsmCell = null;
+            CellIdentityLte cellIDlte = null;
+
+            addTMquery("cellInf.size()", String.valueOf(cellInf.size()));
 
             for (CellInfo ci : cellInf) {
                 if (ci instanceof CellInfoLte && ci.isRegistered()) {
-                    dbm = ((CellInfoLte) ci).getCellSignalStrength().getDbm();
-                    break;
+                    lteCell = (CellInfoLte) ci;
+                    cellIDlte = lteCell.getCellIdentity();
+
+                    addTMquery("Cell ID", String.valueOf( cellIDlte.getCi() ));
+                    addTMquery("Physical Cell ID", String.valueOf( cellIDlte.getPci() ));
+
+                    // EARFCN = E-UTRA Absolute Radio Frequency Channel Number
+                    // E-UTRA = Evolved UMTS Terrestrial Radio Access
+
+//                    cellIDlte.getBands()
+
+                    addTMquery("Earfcn (freq)", String.valueOf( cellIDlte.getEarfcn() ));
+
+                    addTMquery("dB (LTE)", String.valueOf( lteCell.getCellSignalStrength().getDbm() ) );
                 }
             }
 
-            addTMquery("dB", String.valueOf(dbm) );
-
         } catch (Exception e) {
-            addTMquery("dB", "<error>");
+            addTMquery("ALL LTE QUERIES", "<error>");
         }
-//        List<CellInfo> cellInf = tm.getAllCellInfo();
-//        cellInf.size();
-
-//        List<CellInfo> cellInfoList = tm.getAllCellInfo();
-//
-//        if (cellInfoList == null) return;
-//
-//        for (CellInfo cellInfo : cellInfoList) {
-//            if (cellInfo instanceof CellInfoLte && cellInfo.isRegistered()) {
-//                int dbm = ((CellInfoLte) cellInfo).getCellSignalStrength().getDbm();
-//                System.out.println("LTE Signal Strength: " + dbm + " dBm");
-//                break; // Stop after first registered LTE cell
-//            }
-//        }
-
 
 
         try {

@@ -51,8 +51,12 @@ class TelephonyFragment : Fragment() {
 
     private fun onClickButtonGetTelephony(view: View) {
 
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_PHONE_STATE)
-            == PackageManager.PERMISSION_GRANTED) {
+        if (
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_PHONE_STATE)
+            == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
 
             val qt = QueryTelephony(requireContext())
             val tableLayout = binding.tableTelephony
