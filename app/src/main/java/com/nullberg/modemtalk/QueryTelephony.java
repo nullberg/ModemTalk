@@ -3,12 +3,14 @@ package com.nullberg.modemtalk;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+
+import android.telephony.TelephonyManager;
 import android.telephony.CellIdentityLte;
 import android.telephony.CellInfo;
 import android.telephony.CellInfoGsm;
 import android.telephony.CellInfoLte;
 import android.telephony.CellInfoNr;
-import android.telephony.TelephonyManager;
+
 
 import androidx.core.app.ActivityCompat;
 
@@ -29,39 +31,52 @@ public class QueryTelephony {
 
         try {
 
-            List<CellInfo>  cellInf   = null;
-            CellInfoLte     lteCell   = null;
-            CellIdentityLte lteCellID = null;
-            int[] bandlist            = null;
+            List<CellInfo>  cellInfoList   = null;
+            CellInfoLte     lteCell        = null;
+            CellIdentityLte lteCellID      = null;
+            int[] bandlist                 = null;
 
+            int ci     = -1;
+            int eNBid  = -1;
+            int pci    = -1;
+            int earfcn = -1;
 
             if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
-                cellInf = tm.getAllCellInfo(); // No lint warning here
+                cellInfoList = tm.getAllCellInfo(); // No lint warning here
             }
 
-            addTMquery("cellInf.size()", String.valueOf(cellInf.size()));
+            addTMquery("cellInf.size()", String.valueOf(cellInfoList.size()));
 
-            for (CellInfo ci : cellInf) {
-                if (ci instanceof CellInfoLte && ci.isRegistered()) {
-                    lteCell   = (CellInfoLte) ci;
+            for (CellInfo cellInf : cellInfoList) {
+                if (cellInf instanceof CellInfoLte && cellInf.isRegistered()) {
+                    lteCell   = (CellInfoLte) cellInf;
                     lteCellID = lteCell.getCellIdentity();
-
-                    bandlist = lteCellID.getBands();
+                    bandlist  = lteCellID.getBands();
+                    ci        = lteCellID.getCi();
+                    eNBid     = ci >> 8;   // eNB ID (upper 20 bits)
+                    pci       = ci & 0xFF; // PCI (lower 8 bits)
+                    earfcn    = lteCellID.getEarfcn();
                 }
             }
 
+//          Says 15000   (weird0
+//          addTMquery("Bandwidth",    tostr( lteCellID.getBandwidth() ));
+
             if (lteCell != null) {
-                addTMquery("getBands",         intArrToStr(bandlist         ));
-                addTMquery("Cell ID",          tostr( lteCellID.getCi()     ));
-                addTMquery("Physical Cell ID", tostr( lteCellID.getPci()    ));
-                addTMquery("EARFCN",           tostr( lteCellID.getEarfcn() ));
-                addTMquery("dB (LTE)", String.valueOf( lteCell.getCellSignalStrength().getDbm() ) );
+                addTMquery("EARFCN",       tostr( earfcn ));
+                addTMquery("Band",         tostr( EarfcnMapper.getBandFromEarfcn(earfcn) ));
+                addTMquery("getBands",     intArrToStr( bandlist ));
+                addTMquery("getCi()",      tostr( ci )); // get Cell Identity (CI)
+                addTMquery("eNB ID",       tostr( eNBid ));
+                addTMquery("pci from Ci",  tostr( pci ));
+                addTMquery("getPci()",     tostr( lteCellID.getPci() ));
+                addTMquery("dB (LTE)",     tostr( lteCell.getCellSignalStrength().getDbm()));
             }
 
             // EARFCN = E-UTRA Absolute Radio Frequency Channel Number
             // E-UTRA = Evolved UMTS Terrestrial Radio Access
-            
+
         } catch (Exception e) {
             addTMquery("ALL LTE QUERIES", "<error>");
         }
