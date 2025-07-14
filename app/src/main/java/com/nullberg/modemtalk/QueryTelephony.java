@@ -1,5 +1,6 @@
 package com.nullberg.modemtalk;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -31,17 +32,17 @@ public class QueryTelephony {
 
         try {
 
-            List<CellInfo>  cellInfoList   = null;
-            CellInfoLte     lteCell        = null;
-            CellIdentityLte lteCellID      = null;
-            int[] bandlist                 = null;
+            List<CellInfo>  cellInfoList  = null;
+            CellInfoLte     lteCell       = null;
+            CellIdentityLte lteCellID     = null;
+            int[] bandlist                = null;
 
             int ci     = -1;
             int eNBid  = -1;
             int pci    = -1;
             int earfcn = -1;
 
-            if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
                     == PackageManager.PERMISSION_GRANTED) {
                 cellInfoList = tm.getAllCellInfo(); // No lint warning here
             }
@@ -53,7 +54,7 @@ public class QueryTelephony {
                     lteCell   = (CellInfoLte) cellInf;
                     lteCellID = lteCell.getCellIdentity();
                     bandlist  = lteCellID.getBands();
-                    ci        = lteCellID.getCi();
+                    ci        = lteCellID.getCi(); // get Cell Identity (CI)
                     eNBid     = ci >> 8;   // eNB ID (upper 20 bits)
                     pci       = ci & 0xFF; // PCI (lower 8 bits)
                     earfcn    = lteCellID.getEarfcn();
@@ -67,15 +68,26 @@ public class QueryTelephony {
                 addTMquery("EARFCN",       tostr( earfcn ));
                 addTMquery("Band",         tostr( EarfcnMapper.getBandFromEarfcn(earfcn) ));
                 addTMquery("getBands",     intArrToStr( bandlist ));
-                addTMquery("getCi()",      tostr( ci )); // get Cell Identity (CI)
+                addTMquery("getCi()",      tostr( ci ));
                 addTMquery("eNB ID",       tostr( eNBid ));
                 addTMquery("pci from Ci",  tostr( pci ));
                 addTMquery("getPci()",     tostr( lteCellID.getPci() ));
                 addTMquery("dB (LTE)",     tostr( lteCell.getCellSignalStrength().getDbm()));
+                addTMquery("MCC (mobile country code)",   tostr( lteCellID.getMcc() ));
+                addTMquery("MNC (mobile network code)",   tostr( lteCellID.getMnc() ));
+                addTMquery("TAC (tracking area code)",    tostr( lteCellID.getTac() ));
             }
 
-            // EARFCN = E-UTRA Absolute Radio Frequency Channel Number
+            // ARFCN = Absolute Radio Frequency Channel Number
+
+            // EARFCN = E-UTRA ARFCN
             // E-UTRA = Evolved UMTS Terrestrial Radio Access
+
+            // UARFCN = UTRA ARFCN
+            // → Used for UMTS/WCDMA (3G)
+
+            // ARFCN = ARFCN
+            // → Used for GSM (2G)
 
         } catch (Exception e) {
             addTMquery("ALL LTE QUERIES", "<error>");
@@ -83,13 +95,13 @@ public class QueryTelephony {
 
 
         try {
-            addTMquery("Device Software Version", tm.getDeviceSoftwareVersion());
+            addTMquery("Device Software Version", tm.getDeviceSoftwareVersion() );
         } catch (Exception e) {
             addTMquery("Device Software Version", "<error>");
         }
 
         try {
-            addTMquery("Network Operator Name", tm.getNetworkOperatorName());
+            addTMquery("Network Operator Name", tm.getNetworkOperatorName() );
         } catch (Exception e) {
             addTMquery("Network Operator Name", "<error>");
         }
@@ -98,12 +110,6 @@ public class QueryTelephony {
             addTMquery("SIM Operator Name", tm.getSimOperatorName());
         } catch (Exception e) {
             addTMquery("SIM Operator Name", "<error>");
-        }
-
-        try {
-            addTMquery("Line 1 Number", tm.getLine1Number()); // <-- often throws
-        } catch (Exception e) {
-            addTMquery("Line 1 Number", "<error>");
         }
 
         try {
