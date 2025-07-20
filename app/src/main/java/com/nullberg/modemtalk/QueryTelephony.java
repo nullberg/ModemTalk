@@ -41,6 +41,7 @@ public class QueryTelephony {
             int eNBid  = -1;
             int pci    = -1;
             int earfcn = -1;
+            int bw     = -1; // bandwidth
 
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -53,16 +54,19 @@ public class QueryTelephony {
                 if (cellInf instanceof CellInfoLte && cellInf.isRegistered()) {
                     lteCell   = (CellInfoLte) cellInf;
                     lteCellID = lteCell.getCellIdentity();
-                    bandlist  = lteCellID.getBands();
                     ci        = lteCellID.getCi(); // get Cell Identity (CI)
                     eNBid     = ci >> 8;   // eNB ID (upper 20 bits)
                     pci       = ci & 0xFF; // PCI (lower 8 bits)
                     earfcn    = lteCellID.getEarfcn();
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        bandlist  = lteCellID.getBands();
+                        bw        = lteCellID.getBandwidth();
+                        // note, bw ~ 15000   (I guess it's 15000 kHz ;  i.e. 15 MHz)
+                    }
+
                 }
             }
-
-//          Says 15000   (weird0
-//          addTMquery("Bandwidth",    tostr( lteCellID.getBandwidth() ));
 
             if (lteCell != null) {
                 addTMquery("EARFCN",       tostr( earfcn ));
@@ -73,6 +77,7 @@ public class QueryTelephony {
                 addTMquery("pci from Ci",  tostr( pci ));
                 addTMquery("getPci()",     tostr( lteCellID.getPci() ));
                 addTMquery("dB (LTE)",     tostr( lteCell.getCellSignalStrength().getDbm()));
+                addTMquery("Bandwidth",    tostr( bw ));
                 addTMquery("MCC (mobile country code)",   tostr( lteCellID.getMcc() ));
                 addTMquery("MNC (mobile network code)",   tostr( lteCellID.getMnc() ));
                 addTMquery("TAC (tracking area code)",    tostr( lteCellID.getTac() ));
