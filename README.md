@@ -15,7 +15,13 @@ Example screenshot:
 ## Tested phones
 
 * [Xiaomi Redmi 9A](https://www.gsmarena.com/xiaomi_redmi_9a-10279.php) (model M2006C3LG)
+  * **SoC**: Mediatek MT6762G Helio G25 (12 nm)
+  * **Baseband**: MOLY.LR12A.R3.MP.V134.1.P69
+
 * [Xiaomi Redmi 6A](https://www.gsmarena.com/xiaomi_redmi_6a-9217.php) (model M1804C3CG)
+  * **SoC**: Mediatek MT6761 Helio A22 (12 nm)
+  * **Baseband**: MOLY.LR12A.R2.MP.V66.P18
+
 
 
 
