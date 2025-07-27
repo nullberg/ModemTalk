@@ -83,15 +83,15 @@ class ModemTalkFragment : Fragment() {
         // THIS WORKS!!
         // Equiv to su -c "am start -n com.mediatek.engineermode/.EngineerMode"
         // -c flag is for command
-//        Runtime.getRuntime().exec(arrayOf(
-//            "su", "-c",
-//            "am start -n com.mediatek.engineermode/.EngineerMode"
-//        ))
-
         Runtime.getRuntime().exec(arrayOf(
             "su", "-c",
-            "am start -n com.mediatek.engineermode/.bandselect.BandSelect"
+            "am start -n com.mediatek.engineermode/.EngineerMode"
         ))
+
+//        Runtime.getRuntime().exec(arrayOf(
+//            "su", "-c",
+//            "am start -n com.mediatek.engineermode/.bandselect.BandSelect"
+//        ))
 
         // Also can do su -c am start -a android.intent.action.DIAL -d tel:*#*#3646633#*#*"
         // but

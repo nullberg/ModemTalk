@@ -12,4 +12,13 @@ Example screenshot:
 <img src="images/example1_screenshot.jpeg" alt="app icon" width="200px" />
 
 
+## Tested phones
 
+* [Xiaomi Redmi 9A](https://www.gsmarena.com/xiaomi_redmi_9a-10279.php) (model M2006C3LG)
+* [Xiaomi Redmi 6A](https://www.gsmarena.com/xiaomi_redmi_6a-9217.php) (model M1804C3CG)
+
+
+
+## Tips
+
+* The MediaTek EngineerMode [APK](https://en.wikipedia.org/wiki/Apk_(file_format)) is  usually found in <code>/system/priv-app/EngineerMode/EngineerMode.apk</code>
