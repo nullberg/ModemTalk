@@ -30,58 +30,26 @@ public class QueryTelephony {
 
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
+        CellInfMgr cim = new CellInfMgr(context, tm);
+
         try {
 
-            List<CellInfo>  cellInfoList  = null;
-            CellInfoLte     lteCell       = null;
-            CellIdentityLte lteCellID     = null;
-            int[] bandlist                = null;
+            addTMquery("Regidx", tostr(cim.regidx));
+            addTMquery("RegCellInfType", cim.cellInfTypeReg);
+            addTMquery("cellInf.size()", String.valueOf(cim.cisize));
 
-            int ci     = -1;
-            int eNBid  = -1;
-            int pci    = -1;
-            int earfcn = -1;
-            int bw     = -1; // bandwidth
-
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                cellInfoList = tm.getAllCellInfo(); // No lint warning here
-            }
-
-            addTMquery("cellInf.size()", String.valueOf(cellInfoList.size()));
-
-            for (CellInfo cellInf : cellInfoList) {
-                if (cellInf instanceof CellInfoLte && cellInf.isRegistered()) {
-                    lteCell   = (CellInfoLte) cellInf;
-                    lteCellID = lteCell.getCellIdentity();
-                    ci        = lteCellID.getCi(); // get Cell Identity (CI)
-                    eNBid     = ci >> 8;   // eNB ID (upper 20 bits)
-                    pci       = ci & 0xFF; // PCI (lower 8 bits)
-                    earfcn    = lteCellID.getEarfcn();
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        bandlist  = lteCellID.getBands();
-                        bw        = lteCellID.getBandwidth();
-                        // note, bw ~ 15000   (I guess it's 15000 kHz ;  i.e. 15 MHz)
-                    }
-
-                }
-            }
-
-            if (lteCell != null) {
-                addTMquery("EARFCN",       tostr( earfcn ));
-                addTMquery("Band",         tostr( EarfcnMapper.getBandFromEarfcn(earfcn) ));
-                addTMquery("getBands",     intArrToStr( bandlist ));
-                addTMquery("getCi()",      tostr( ci ));
-                addTMquery("eNB ID",       tostr( eNBid ));
-                addTMquery("pci from Ci",  tostr( pci ));
-                addTMquery("getPci()",     tostr( lteCellID.getPci() ));
-                addTMquery("dB (LTE)",     tostr( lteCell.getCellSignalStrength().getDbm()));
-                addTMquery("Bandwidth",    tostr( bw ));
-                addTMquery("MCC (mobile country code)",   tostr( lteCellID.getMcc() ));
-                addTMquery("MNC (mobile network code)",   tostr( lteCellID.getMnc() ));
-                addTMquery("TAC (tracking area code)",    tostr( lteCellID.getTac() ));
-            }
+            addTMquery("EARFCN",       tostr( cim.earfcn ));
+            addTMquery("Band",         tostr( cim.band ));
+            addTMquery("getBands",     intArrToStr( cim.bandlist ));
+            addTMquery("getCi()",      tostr( cim.ci ));
+            addTMquery("eNB ID",       tostr( cim.eNBid ));
+            addTMquery("pci from Ci",  tostr( cim.pci ));
+            addTMquery("getPci()",     tostr( cim.getpci ));
+            addTMquery("dB (LTE)",     tostr( cim.dB ));
+            addTMquery("Bandwidth",    tostr( cim.bw ));
+            addTMquery("MCC (mobile country code)",   tostr( cim.MCC ));
+            addTMquery("MNC (mobile network code)",   tostr( cim.MNC ));
+            addTMquery("TAC (tracking area code)",    tostr( cim.TAC ));
 
             // ARFCN = Absolute Radio Frequency Channel Number
 
