@@ -34,6 +34,10 @@ public class QueryTelephony {
 
         try {
 
+            for (int i=0; i<cim.cellInfAll.size(); i++) {
+                addTMquery( tostr(i), cim.cellInfAll.get(i));
+            }
+
             addTMquery("Regidx", tostr(cim.regidx));
             addTMquery("RegCellInfType", cim.cellInfTypeReg);
             addTMquery("cellInf.size()", String.valueOf(cim.cisize));
