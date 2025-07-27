@@ -11,6 +11,8 @@ import com.nullberg.modemtalk.Utls
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import java.io.File
 
@@ -77,30 +79,38 @@ class ModemTalkFragment : Fragment() {
 
     private fun openEngineerMode(context: Context) {
 
-//        Utls.simpleAlertDialog(context)
+
+        // THIS WORKS!!
+        // Equiv to su -c "am start -n com.mediatek.engineermode/.EngineerMode"
+        // -c flag is for command
+//        Runtime.getRuntime().exec(arrayOf(
+//            "su", "-c",
+//            "am start -n com.mediatek.engineermode/.EngineerMode"
+//        ))
+
+        Runtime.getRuntime().exec(arrayOf(
+            "su", "-c",
+            "am start -n com.mediatek.engineermode/.bandselect.BandSelect"
+        ))
+
+        // Also can do su -c am start -a android.intent.action.DIAL -d tel:*#*#3646633#*#*"
+        // but
+
+//        val intent = context.packageManager.getLaunchIntentForPackage("com.android.settings")
+//        val intent = context.packageManager.getLaunchIntentForPackage("com.mediatek.engineermode")
+//        Works but it doesn't paste the dialer code.
+//        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:*#*#3646633#*#*"))
+//        startActivity(intent)
 
 
-
-        //val intent = context.packageManager.getLaunchIntentForPackage("com.android.settings")
-
-
-
-//      val intent = context.packageManager.getLaunchIntentForPackage("com.mediatek.engineermode")
-//      intent is null
-
-        val intent = Intent();
-
-        intent.setClassName(
-            "com.mediatek.engineermode",
-            "com.mediatek.engineermode.EngineerMode"
-        )
-
-        try {
-            startActivity(intent)
-        } catch(e : Exception) {
-            Toast.makeText(context, "EngineerMode failed to launch", Toast.LENGTH_SHORT).show()
-        }
-
+//
+//        try {
+//            startActivity(intent)
+//        } catch(e : Exception) {
+//
+//            Utls.custAlertDialog(context, "${e.message}");
+//            Log.e("EngineerMode", "Launch failed", e)
+//        }
 
 
 //        val intent = Intent()
@@ -109,33 +119,6 @@ class ModemTalkFragment : Fragment() {
 //            "com.mediatek.engineermode.bandmode.BandMode"
 //        )
 //        startActivity(intent)
-
-
-
-//        val intent = Intent()
-//        intent.setClassName(
-//            "com.mediatek.engineermode",
-//            "com.mediatek.engineermode.EngineerMode"
-//        )
-//        try {
-//            startActivity(intent)
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            Toast.makeText(context, "Cannot open EngineerMode", Toast.LENGTH_SHORT).show()
-//        }
-
-
-//        try {
-//            val intent = Intent()
-//            intent.setClassName(
-//                "com.mediatek.engineermode",
-//                "com.mediatek.engineermode.EngineerMode"
-//            )
-//            context.startActivity(intent)
-//        } catch (e: Exception) {
-//            Toast.makeText(context, "EngineerMode not found", Toast.LENGTH_SHORT).show()
-//            e.printStackTrace()
-//        }
 
 
     }
