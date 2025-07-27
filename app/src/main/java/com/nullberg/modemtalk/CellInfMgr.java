@@ -49,7 +49,6 @@ public class CellInfMgr {
             cellInfAll.add( getCellInfType( cellInf ) );
         }
 
-
         populateParamsMaster();
 
     }

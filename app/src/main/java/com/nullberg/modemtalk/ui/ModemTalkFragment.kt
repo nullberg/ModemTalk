@@ -12,6 +12,7 @@ import com.nullberg.modemtalk.Utls
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import java.io.File
 
 class ModemTalkFragment : Fragment() {
 
@@ -34,9 +35,13 @@ class ModemTalkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonCheckEngMode.setOnClickListener {
+            onClickButtonCheckEngMode(it)
+        }
+
         // Connect the button click
-        binding.button1.setOnClickListener {
-            onClickButton1(it)
+        binding.buttonOpenEngMode.setOnClickListener {
+            onClickButtonOpenEngMode(it)
         }
     }
 
@@ -45,7 +50,24 @@ class ModemTalkFragment : Fragment() {
         _binding = null
     }
 
-    private fun onClickButton1(view: View) {
+    private fun onClickButtonCheckEngMode(view: View) {
+
+        val engModePath = "/system/priv-app/EngineerMode/EngineerMode.apk";
+
+        val fileEngMode = File(engModePath)
+
+        // I DID THIS:  $ adb shell pm list packages | grep -i engineer
+        // It returned com.mediatek.engineermode !!
+
+        if (fileEngMode.exists()) {
+            Utls.custAlertDialog(requireContext(), "YES!!\n$engModePath\nexists!!");
+        } else {
+            Utls.custAlertDialog(requireContext(), "Did not find ENG MODE!!")
+        }
+
+    }
+
+    private fun onClickButtonOpenEngMode(view: View) {
 
 //        Utls.simpleAlertDialog(requireContext())
 
@@ -55,7 +77,31 @@ class ModemTalkFragment : Fragment() {
 
     private fun openEngineerMode(context: Context) {
 
-        Utls.simpleAlertDialog(context)
+//        Utls.simpleAlertDialog(context)
+
+
+
+        //val intent = context.packageManager.getLaunchIntentForPackage("com.android.settings")
+
+
+
+//      val intent = context.packageManager.getLaunchIntentForPackage("com.mediatek.engineermode")
+//      intent is null
+
+        val intent = Intent();
+
+        intent.setClassName(
+            "com.mediatek.engineermode",
+            "com.mediatek.engineermode.EngineerMode"
+        )
+
+        try {
+            startActivity(intent)
+        } catch(e : Exception) {
+            Toast.makeText(context, "EngineerMode failed to launch", Toast.LENGTH_SHORT).show()
+        }
+
+
 
 //        val intent = Intent()
 //        intent.setClassName(

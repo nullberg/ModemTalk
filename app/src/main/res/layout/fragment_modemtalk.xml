@@ -22,13 +22,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonCheckEngMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:onClick="onClickButton1"
-        android:text="Button1"
+        android:text="CHECK FOR ENG MODE APK"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textModemTalkTitle" />
+
+    <Button
+        android:id="@+id/buttonOpenEngMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:onClick="onClickButtonOpenEngMode"
+        android:text="LAUNCH ENG MODE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCheckEngMode" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

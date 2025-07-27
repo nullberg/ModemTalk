@@ -13,6 +13,14 @@ import android.widget.TextView
 
 object Utls {
 
+    fun custAlertDialog(context: Context, strMsg: String) {
+
+        AlertDialog.Builder(context)
+            .setMessage(strMsg)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
     fun simpleAlertDialog(context: Context) {
 
         AlertDialog.Builder(context)
