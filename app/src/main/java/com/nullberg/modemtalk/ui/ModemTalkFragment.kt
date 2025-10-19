@@ -54,7 +54,7 @@ class ModemTalkFragment : Fragment() {
 
     private fun onClickButtonCheckEngMode(view: View) {
 
-        val engModePath = "/system/priv-app/EngineerMode/EngineerMode.apk";
+        val engModePath = "/system/priv-app/EngineerMode/EngineerMode.apk"
 
         val fileEngMode = File(engModePath)
 
@@ -62,7 +62,7 @@ class ModemTalkFragment : Fragment() {
         // It returned com.mediatek.engineermode !!
 
         if (fileEngMode.exists()) {
-            Utls.custAlertDialog(requireContext(), "YES!!\n$engModePath\nexists!!");
+            Utls.custAlertDialog(requireContext(), "YES!!\n$engModePath\nexists!!")
         } else {
             Utls.custAlertDialog(requireContext(), "Did not find ENG MODE!!")
         }

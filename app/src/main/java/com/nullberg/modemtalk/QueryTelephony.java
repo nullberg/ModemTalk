@@ -30,9 +30,11 @@ public class QueryTelephony {
 
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-        CellInfMgr cim = new CellInfMgr(context, tm);
-
         try {
+
+            CellInfMgr cim = new CellInfMgr(context, tm);
+
+            addTMquery("cellInf.size()", String.valueOf(cim.cisize));
 
             for (int i=0; i<cim.cellInfAll.size(); i++) {
                 addTMquery( tostr(i), cim.cellInfAll.get(i));
@@ -40,7 +42,7 @@ public class QueryTelephony {
 
             addTMquery("Regidx", tostr(cim.regidx));
             addTMquery("RegCellInfType", cim.cellInfTypeReg);
-            addTMquery("cellInf.size()", String.valueOf(cim.cisize));
+
 
             addTMquery("EARFCN",       tostr( cim.earfcn ));
             addTMquery("Band",         tostr( cim.band ));
