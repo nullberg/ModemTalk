@@ -98,7 +98,6 @@ class ModemTalkFragment : Fragment() {
             Log.e("Launch SimpleUI01", "Launch failed", e)
         }
 
-
 //        val launchIntent = requireContext().packageManager.getLaunchIntentForPackage("com.nullberg.simplui01")
 //        if (launchIntent != null) {
 //            startActivity(launchIntent)
@@ -114,10 +113,21 @@ class ModemTalkFragment : Fragment() {
         // THIS WORKS!!
         // Equiv to su -c "am start -n com.mediatek.engineermode/.EngineerMode"
         // -c flag is for command
-        Runtime.getRuntime().exec(arrayOf(
-            "su", "-c",
-            "am start -n com.mediatek.engineermode/.EngineerMode"
-        ))
+
+        try {
+            Runtime.getRuntime().exec(
+                arrayOf(
+                    "su", "-c",
+                    "am start -n com.mediatek.engineermode/.EngineerMode"
+                )
+            )
+        } catch (e : Exception) {
+            Utls.custAlertDialog(requireContext(), "${e.message}");
+            Log.e("Launch EngineerMode fail", "Launch failed", e)
+        }
+
+
+
 
 //        Runtime.getRuntime().exec(arrayOf(
 //            "su", "-c",
