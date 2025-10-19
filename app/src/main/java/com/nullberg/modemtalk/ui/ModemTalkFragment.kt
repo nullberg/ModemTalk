@@ -45,6 +45,11 @@ class ModemTalkFragment : Fragment() {
         binding.buttonOpenEngMode.setOnClickListener {
             onClickButtonOpenEngMode(it)
         }
+
+        binding.buttonOpenSimpleUI.setOnClickListener {
+            onClickButtonOpenSimpleUI(it)
+        }
+
     }
 
     override fun onDestroyView() {
@@ -74,6 +79,32 @@ class ModemTalkFragment : Fragment() {
 //        Utls.simpleAlertDialog(requireContext())
 
         openEngineerMode(requireContext())
+
+    }
+
+    private fun onClickButtonOpenSimpleUI(view: View) {
+
+//        Utls.custAlertDialog(requireContext(), "Open simple UI...")
+
+        try {
+            Runtime.getRuntime().exec(
+                arrayOf(
+                    "su", "-c",
+                    "am start -n com.nullberg.simplui01/.MainActivity"
+                )
+            )
+        } catch(e : Exception) {
+            Utls.custAlertDialog(requireContext(), "${e.message}");
+            Log.e("Launch SimpleUI01", "Launch failed", e)
+        }
+
+
+//        val launchIntent = requireContext().packageManager.getLaunchIntentForPackage("com.nullberg.simplui01")
+//        if (launchIntent != null) {
+//            startActivity(launchIntent)
+//        } else {
+//            Utls.custAlertDialog(requireContext(), "com.nullberg.simplui01 failed to launch")
+//        }
 
     }
 
