@@ -13,6 +13,10 @@ import android.widget.TextView
 
 object Utls {
 
+    fun <T> tostr(genInput: T): String? {
+        return genInput.toString()
+    }
+
     fun custAlertDialog(context: Context, strMsg: String) {
 
         AlertDialog.Builder(context)

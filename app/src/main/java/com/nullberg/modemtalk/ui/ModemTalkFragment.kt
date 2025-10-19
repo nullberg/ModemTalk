@@ -87,14 +87,30 @@ class ModemTalkFragment : Fragment() {
 //        Utls.custAlertDialog(requireContext(), "Open simple UI...")
 
         try {
-            Runtime.getRuntime().exec(
-                arrayOf(
-                    "su", "-c",
-                    "am start -n com.nullberg.simplui01/.MainActivity"
-                )
+
+//          This WORKS
+//          Runtime.getRuntime().exec( arrayOf(  "su", "-c", "am start -n com.nullberg.simplui01/.MainActivity" ))
+
+//            val launchIntent = requireContext().packageManager.getLaunchIntentForPackage(
+//                "com.nullberg.simplui01")
+//            if (launchIntent != null) {
+//                startActivity(launchIntent)
+//            } else {
+//                Utls.custAlertDialog(requireContext(), "launchIntent is null!")
+//            }
+
+            val intent = Intent()
+            intent.setClassName(
+                "com.nullberg.simplui01",
+                "com.nullberg.simplui01.MainActivity"
             )
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)   // important if not called from Activity
+            requireContext().startActivity(intent)
+
+
+
         } catch(e : Exception) {
-            Utls.custAlertDialog(requireContext(), "${e.message}");
+            Utls.custAlertDialog(requireContext(), "${e.message}")
             Log.e("Launch SimpleUI01", "Launch failed", e)
         }
 
