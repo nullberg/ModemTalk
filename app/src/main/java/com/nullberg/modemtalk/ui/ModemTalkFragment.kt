@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.nullberg.modemtalk.databinding.FragmentModemtalkBinding
-import android.app.AlertDialog
 import com.nullberg.modemtalk.Utls
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import java.io.File
 
 class ModemTalkFragment : Fragment() {
@@ -48,6 +45,10 @@ class ModemTalkFragment : Fragment() {
 
         binding.buttonOpenSimpleUI.setOnClickListener {
             onClickButtonOpenSimpleUI(it)
+        }
+
+        binding.buttonDMESG.setOnClickListener {
+            onClickButtonDMESG(it)
         }
 
     }
@@ -123,6 +124,12 @@ class ModemTalkFragment : Fragment() {
 
     }
 
+    private fun onClickButtonDMESG(context: View) {
+
+        Utls.custAlertDialog(requireContext(),"works")
+
+    }
+
     private fun openEngineerMode(context: Context) {
 
 
@@ -141,9 +148,6 @@ class ModemTalkFragment : Fragment() {
             Utls.custAlertDialog(requireContext(), "${e.message}");
             Log.e("Launch EngineerMode fail", "Launch failed", e)
         }
-
-
-
 
 //        Runtime.getRuntime().exec(arrayOf(
 //            "su", "-c",
@@ -179,6 +183,8 @@ class ModemTalkFragment : Fragment() {
 
 
     }
+
+
 
 
 }

@@ -51,5 +51,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonOpenEngMode" />
 
+    <Button
+        android:id="@+id/buttonDMESG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="dmesg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonOpenSimpleUI" />
+
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="377dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDMESG">
+
+
+        <TextView
+            android:id="@+id/textViewDmesg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="textViewDmesg" />
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
