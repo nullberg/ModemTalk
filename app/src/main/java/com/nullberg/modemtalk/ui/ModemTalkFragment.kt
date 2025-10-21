@@ -126,7 +126,9 @@ class ModemTalkFragment : Fragment() {
 
     private fun onClickButtonDMESG(context: View) {
 
-        Utls.custAlertDialog(requireContext(),"works")
+//        Utls.custAlertDialog(requireContext(),"works")
+
+        binding.textViewDmesg.text = "test dmesg"
 
     }
 
