@@ -124,14 +124,65 @@ class ModemTalkFragment : Fragment() {
 
     }
 
+
+    private fun onClickButtonDMESG(v: View) = Thread {
+        try {
+            val cmd = arrayOf("su", "-c", "logcat -b radio -d | grep -i 'lte\\|band\\|rsrp\\|rssi'")
+            val process = Runtime.getRuntime().exec(cmd)
+            val out = process.inputStream.bufferedReader().readLines()
+                .takeLast(20) // show latest 20 lines
+                .joinToString("\n")
+
+            v.post { binding.textViewDmesg.text = out.ifEmpty { "No LTE/band info found." } }
+        } catch (e: Exception) {
+            v.post { binding.textViewDmesg.text = "Error: ${e.message}" }
+        }
+    }.start()
+/*
+
+    private fun onClickButtonDMESG(v: View) = Thread {
+        try {
+            val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "dmesg"))
+            val out = process.inputStream.bufferedReader().readLines()
+                .takeLast(10) // keep only last 10 lines
+                .joinToString("\n")
+
+            v.post { binding.textViewDmesg.text = out }
+        } catch (e: Exception) {
+            v.post { binding.textViewDmesg.text = "Error: ${e.message}" }
+        }
+    }.start()
+
+
+ */
+
+
+/*
     private fun onClickButtonDMESG(context: View) {
 
-//        Utls.custAlertDialog(requireContext(),"works")
+//      Utls.custAlertDialog(requireContext(),"works")
 
-        binding.textViewDmesg.text = "test dmesg"
+//      binding.textViewDmesg.text = "test dmesg"
+
+        Thread {
+            try {
+                // Run 'dmesg' as root
+                val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "dmesg"))
+                val reader = process.inputStream.bufferedReader()
+                val outpt = reader.readText()
+                reader.close()
+
+                // Update the TextView on the main thread
+                binding.textViewDmesg.text = outpt
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                binding.textViewDmesg.text = "Error: ${e.message}"
+            }
+        }.start()
 
     }
-
+*/
     private fun openEngineerMode(context: Context) {
 
 
